@@ -29,7 +29,7 @@ class BilinearInterpolation(object):
 
 class NYUDataset(Dataset):
     def __init__(self, file_name, data_dir, transform = None, target_transform = None):
-        self.df = self.load_df(file_name, data_dir)[:1_000]
+        self.df = self.load_df(file_name, data_dir)
         self.data_dir = data_dir
         self.transform = transform
         self.target_transform = target_transform
@@ -136,7 +136,7 @@ class DepthDataModule(LightningDataModule):
             transforms.PILToTensor(), BilinearInterpolation((56, 56))
         ])
         self.transforms_mask = transforms.Compose([
-            transforms.PILToTensor(), NormalizeData(10_000), BilinearInterpolation((56, 56))
+            transforms.PILToTensor(), NormalizeData(10_000 * (1/255)), BilinearInterpolation((56, 56))
         ])
 
         self.train_file = train_file

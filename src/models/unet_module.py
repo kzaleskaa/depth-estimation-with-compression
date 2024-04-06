@@ -150,6 +150,8 @@ class UNETLitModule(LightningModule):
         self.log("val/loss", self.val_loss, on_step=False, on_epoch=True, prog_bar=True)
         self.log("val/ssim", self.val_ssim, on_step=False, on_epoch=True, prog_bar=True)
 
+        return preds
+
     def on_validation_epoch_end(self) -> None:
         "Lightning hook that is called when a validation epoch ends."
         acc = self.val_ssim.compute()  # get current val acc

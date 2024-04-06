@@ -28,7 +28,7 @@ rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 
 from src.utils import (RankedLogger, extras, get_metric_value,
                        instantiate_callbacks, instantiate_loggers,
-                       log_hyperparameters, task_wrapper)
+                       log_hyperparameters, task_wrapper, DisplayReults)
 
 log = RankedLogger(__name__, rank_zero_only=True)
 
@@ -56,6 +56,10 @@ def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
 
     log.info("Instantiating callbacks...")
     callbacks: List[Callback] = instantiate_callbacks(cfg.get("callbacks"))
+    print(callbacks)
+    t = DisplayReults()
+    print(t)
+    callbacks.append(DisplayReults())
 
     log.info("Instantiating loggers...")
     logger: List[Logger] = instantiate_loggers(cfg.get("logger"))

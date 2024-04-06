@@ -1,14 +1,15 @@
-from typing import Any, Dict, Optional, Tuple
 import os
-from PIL import Image
-import numpy as np
-import torch
+from typing import Any, Dict, Optional, Tuple
+
 import cv2 as cv
+import numpy as np
 import pandas as pd
-from lightning import LightningDataModule
-from torch.utils.data import ConcatDataset, DataLoader, Dataset, random_split
-from torchvision.transforms import transforms
+import torch
 import torch.nn.functional as F
+from lightning import LightningDataModule
+from PIL import Image
+from torch.utils.data import DataLoader, Dataset, random_split
+from torchvision.transforms import transforms
 
 
 class NormalizeData(object):
@@ -28,7 +29,7 @@ class BilinearInterpolation(object):
 
 class NYUDataset(Dataset):
     def __init__(self, file_name, data_dir, transform = None, target_transform = None):
-        self.df = self.load_df(file_name, data_dir)[:10]
+        self.df = self.load_df(file_name, data_dir)[:1_000]
         self.data_dir = data_dir
         self.transform = transform
         self.target_transform = target_transform
@@ -205,6 +206,7 @@ class DepthDataModule(LightningDataModule):
             num_workers=self.hparams.num_workers,
             pin_memory=self.hparams.pin_memory,
             shuffle=True,
+            persistent_workers=True
         )
 
     def val_dataloader(self) -> DataLoader[Any]:
@@ -218,6 +220,7 @@ class DepthDataModule(LightningDataModule):
             num_workers=self.hparams.num_workers,
             pin_memory=self.hparams.pin_memory,
             shuffle=False,
+            persistent_workers=True
         )
 
     def test_dataloader(self) -> DataLoader[Any]:
@@ -231,6 +234,7 @@ class DepthDataModule(LightningDataModule):
             num_workers=self.hparams.num_workers,
             pin_memory=self.hparams.pin_memory,
             shuffle=False,
+            persistent_workers=True
         )
 
     def teardown(self, stage: Optional[str] = None) -> None:

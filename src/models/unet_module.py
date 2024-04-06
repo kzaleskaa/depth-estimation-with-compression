@@ -2,9 +2,9 @@ from typing import Any, Dict, Tuple
 
 import torch
 from lightning import LightningModule
-from torchmetrics import MaxMetric, MeanMetric
+from torchmetrics import (MaxMetric, MeanMetric,
+                          StructuralSimilarityIndexMeasure)
 from torchmetrics.classification.accuracy import Accuracy
-from torchmetrics import StructuralSimilarityIndexMeasure
 
 
 class UNETLitModule(LightningModule):

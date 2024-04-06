@@ -2,6 +2,7 @@ import torch
 import torchvision
 from lightning.pytorch.callbacks import Callback
 
+
 class DisplayReults(Callback):
     def on_validation_batch_end(self, trainer, pl_module, outputs, batch, batch_idx):
         if batch_idx == 0:
@@ -16,7 +17,12 @@ class DisplayReults(Callback):
             res_grid = torchvision.utils.make_grid(outputs)
 
             # log to tensorboard
-            trainer.logger.experiment.add_image("Validation/Image", img_grid, global_step=trainer.global_step)
-            trainer.logger.experiment.add_image("Validation/Mask", mask_grid, global_step=trainer.global_step)
-            trainer.logger.experiment.add_image("Validation/Result", res_grid, global_step=trainer.global_step)
-
+            trainer.logger.experiment.add_image(
+                "Validation/Image", img_grid, global_step=trainer.global_step
+            )
+            trainer.logger.experiment.add_image(
+                "Validation/Mask", mask_grid, global_step=trainer.global_step
+            )
+            trainer.logger.experiment.add_image(
+                "Validation/Result", res_grid, global_step=trainer.global_step
+            )

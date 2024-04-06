@@ -3,7 +3,6 @@ from typing import Any, Dict, List, Optional, Tuple
 import hydra
 import lightning as L
 import rootutils
-import torch
 from lightning import Callback, LightningDataModule, LightningModule, Trainer
 from lightning.pytorch.loggers import Logger
 from omegaconf import DictConfig
@@ -26,9 +25,16 @@ rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 # more info: https://github.com/ashleve/rootutils
 # ------------------------------------------------------------------------------------ #
 
-from src.utils import (RankedLogger, extras, get_metric_value,
-                       instantiate_callbacks, instantiate_loggers,
-                       log_hyperparameters, task_wrapper, DisplayReults)
+from src.utils import (
+    DisplayReults,
+    RankedLogger,
+    extras,
+    get_metric_value,
+    instantiate_callbacks,
+    instantiate_loggers,
+    log_hyperparameters,
+    task_wrapper,
+)
 
 log = RankedLogger(__name__, rank_zero_only=True)
 
@@ -56,9 +62,6 @@ def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
 
     log.info("Instantiating callbacks...")
     callbacks: List[Callback] = instantiate_callbacks(cfg.get("callbacks"))
-    print(callbacks)
-    t = DisplayReults()
-    print(t)
     callbacks.append(DisplayReults())
 
     log.info("Instantiating loggers...")

@@ -1,62 +1,12 @@
-import os
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, Optional
 
-import cv2 as cv
-import numpy as np
-import pandas as pd
 import torch
-import torch.nn.functional as F
 from lightning import LightningDataModule
-from PIL import Image
 from torch.utils.data import DataLoader, Dataset, random_split
 from torchvision.transforms import transforms
 
-
-class NormalizeData(object):
-    def __init__(self, divisor):
-        self.divisor = divisor
-
-    def __call__(self, img):
-        return img / self.divisor
-
-class BilinearInterpolation(object):
-    def __init__(self, size):
-        self.size = size
-
-    def __call__(self, mask):
-        return F.interpolate(torch.unsqueeze(mask, 0), size=self.size, mode='bilinear', align_corners=True)
-
-
-class NYUDataset(Dataset):
-    def __init__(self, file_name, data_dir, transform = None, target_transform = None):
-        self.df = self.load_df(file_name, data_dir)
-        self.data_dir = data_dir
-        self.transform = transform
-        self.target_transform = target_transform
-
-    def load_df(self, file_name, data_dir):
-        file_path = os.path.join(data_dir, file_name)
-        return pd.read_csv(file_path, names=["img", "depth"], header=None)
-
-    def __len__(self):
-        return len(self.df)
-
-    def __getitem__(self, idx):
-        img_path = self.df.iloc[idx, 0]
-        mask_path =  self.df.iloc[idx, 1]
-
-        img = Image.open(img_path)
-        mask = Image.open(mask_path)
-
-        if self.transform:
-            img = self.transform(img)
-        if self.target_transform:
-            mask = self.target_transform(mask).squeeze(0)
-
-        img = img.float() / 255.0
-        mask = mask.float() / 255.0
-
-        return img, mask
+from .components.custom_transforms import BilinearInterpolation, NormalizeData
+from .components.nyu_dataset import NYUDataset
 
 
 class DepthDataModule(LightningDataModule):
@@ -129,15 +79,19 @@ class DepthDataModule(LightningDataModule):
         self.save_hyperparameters(logger=False)
 
         # data transformations
-        self.transforms = transforms.Compose([
-            transforms.PILToTensor(), transforms.Resize((224, 224))
-        ])
-        self.transforms_mask_train = transforms.Compose([
-            transforms.PILToTensor(), BilinearInterpolation((56, 56))
-        ])
-        self.transforms_mask = transforms.Compose([
-            transforms.PILToTensor(), NormalizeData(10_000 * (1/255)), BilinearInterpolation((56, 56))
-        ])
+        self.transforms = transforms.Compose(
+            [transforms.PILToTensor(), transforms.Resize((224, 224))]
+        )
+        self.transforms_mask_train = transforms.Compose(
+            [transforms.PILToTensor(), BilinearInterpolation((56, 56))]
+        )
+        self.transforms_mask = transforms.Compose(
+            [
+                transforms.PILToTensor(),
+                NormalizeData(10_000 * (1 / 255)),
+                BilinearInterpolation((56, 56)),
+            ]
+        )
 
         self.train_file = train_file
         self.test_file = test_file
@@ -186,14 +140,23 @@ class DepthDataModule(LightningDataModule):
 
         # load and split datasets only if not loaded already
         if not self.data_train and not self.data_val and not self.data_test:
-            trainset = NYUDataset(self.train_file, self.data_dir, transform=self.transforms, target_transform=self.transforms_mask_train)
-            self.data_test = NYUDataset(self.test_file, self.data_dir, transform=self.transforms, target_transform=self.transforms_mask)
+            trainset = NYUDataset(
+                self.train_file,
+                self.data_dir,
+                transform=self.transforms,
+                target_transform=self.transforms_mask_train,
+            )
+            self.data_test = NYUDataset(
+                self.test_file,
+                self.data_dir,
+                transform=self.transforms,
+                target_transform=self.transforms_mask,
+            )
             self.data_train, self.data_val = random_split(
                 dataset=trainset,
                 lengths=[0.8, 0.2],
                 generator=torch.Generator().manual_seed(42),
             )
-
 
     def train_dataloader(self) -> DataLoader[Any]:
         """Create and return the train dataloader.
@@ -206,7 +169,7 @@ class DepthDataModule(LightningDataModule):
             num_workers=self.hparams.num_workers,
             pin_memory=self.hparams.pin_memory,
             shuffle=True,
-            persistent_workers=True
+            persistent_workers=True,
         )
 
     def val_dataloader(self) -> DataLoader[Any]:
@@ -220,7 +183,7 @@ class DepthDataModule(LightningDataModule):
             num_workers=self.hparams.num_workers,
             pin_memory=self.hparams.pin_memory,
             shuffle=False,
-            persistent_workers=True
+            persistent_workers=True,
         )
 
     def test_dataloader(self) -> DataLoader[Any]:
@@ -234,7 +197,7 @@ class DepthDataModule(LightningDataModule):
             num_workers=self.hparams.num_workers,
             pin_memory=self.hparams.pin_memory,
             shuffle=False,
-            persistent_workers=True
+            persistent_workers=True,
         )
 
     def teardown(self, stage: Optional[str] = None) -> None:

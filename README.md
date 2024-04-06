@@ -21,11 +21,11 @@ This project entails the development and optimization of a depth estimation mode
 
 ```bash
 # clone project
-git clone https://github.com/YourGithubName/your-repo-name
-cd your-repo-name
+git clone https://github.com/kzaleskaa/depth-estimation-with-compression
+cd depth-estimation-with-compression
 
 # [OPTIONAL] create conda environment
-conda create -n myenv python=3.9
+conda create -n myenv python=3.11
 conda activate myenv
 
 # install pytorch according to instructions
@@ -39,8 +39,8 @@ pip install -r requirements.txt
 
 ```bash
 # clone project
-git clone https://github.com/YourGithubName/your-repo-name
-cd your-repo-name
+git clone https://github.com/kzaleskaa/depth-estimation-with-compression
+cd depth-estimation-with-compression
 
 # create conda environment and install dependencies
 conda env create -f environment.yaml -n myenv

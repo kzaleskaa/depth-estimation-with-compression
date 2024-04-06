@@ -7,7 +7,7 @@ from torchmetrics.image import StructuralSimilarityIndexMeasure
 
 
 class UNETLitModule(LightningModule):
-    """Example of a `LightningModule` for MNIST classification.
+    """Example of a `LightningModule` for Depth NYU v2 dataset and creating masks from images.
 
     A `LightningModule` implements 8 key methods:
 
@@ -46,7 +46,7 @@ class UNETLitModule(LightningModule):
         scheduler: torch.optim.lr_scheduler,
         compile: bool,
     ) -> None:
-        """Initialize a `MNISTLitModule`.
+        """Initialize a `UNETLitModule`.
 
         :param net: The model to train.
         :param optimizer: The optimizer to use for training.

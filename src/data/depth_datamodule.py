@@ -10,14 +10,9 @@ from .components.nyu_dataset import NYUDataset
 
 
 class DepthDataModule(LightningDataModule):
-    """`LightningDataModule` for the MNIST dataset.
+    """`LightningDataModule` for the Depth NYU v2 dataset.
 
-    The MNIST database of handwritten digits has a training set of 60,000 examples, and a test set of 10,000 examples.
-    It is a subset of a larger set available from NIST. The digits have been size-normalized and centered in a
-    fixed-size image. The original black and white images from NIST were size normalized to fit in a 20x20 pixel box
-    while preserving their aspect ratio. The resulting images contain grey levels as a result of the anti-aliasing
-    technique used by the normalization algorithm. the images were centered in a 28x28 image by computing the center of
-    mass of the pixels, and translating the image so as to position this point at the center of the 28x28 field.
+    The NYU-Depth V2 dataset (https://www.kaggle.com/datasets/soumikrakshit/nyu-depth-v2) has training set of 50688 examples and a test set of 654 examples. One example consists of an image and a depth map. The initial image is resized to 224x224 pixels and the depth map is resized to 56x56 pixels.
 
     A `LightningDataModule` implements 7 key methods:
 
@@ -101,14 +96,6 @@ class DepthDataModule(LightningDataModule):
         self.data_test: Optional[Dataset] = None
 
         self.batch_size_per_device = batch_size
-
-    @property
-    def num_classes(self) -> int:
-        """Get the number of classes.
-
-        :return: The number of MNIST classes (10).
-        """
-        return 10
 
     def prepare_data(self) -> None:
         """Download data if needed. Lightning ensures that `self.prepare_data()` is called only

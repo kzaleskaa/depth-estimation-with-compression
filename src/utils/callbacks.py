@@ -1,10 +1,18 @@
+import pytorch_lightning as pl
 import torch
 import torchvision
 from lightning.pytorch.callbacks import Callback
 
 
 class DisplayReults(Callback):
-    def on_validation_batch_end(self, trainer, pl_module, outputs, batch, batch_idx):
+    def on_validation_batch_end(
+        self,
+        trainer: pl.Trainer,
+        pl_module: pl.LightningModule,
+        outputs: torch.Tensor,
+        batch: torch.Tensor,
+        batch_idx: int,
+    ) -> None:
         if batch_idx == 0:
             img, mask = batch
             img = img[:3]

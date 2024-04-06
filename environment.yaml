@@ -21,7 +21,7 @@ channels:
 # compatibility is usually guaranteed
 
 dependencies:
-  - python=3.10
+  - python=3.11
   - pytorch=2.*
   - torchvision=0.*
   - lightning=2.*

@@ -1,9 +1,11 @@
+from typing import List
+
 import torch
 import torch.nn as nn
 
 
 class BiFPN(nn.Module):
-    def __init__(self, fpn_sizes):
+    def __init__(self, fpn_sizes: List[int]) -> None:
         super().__init__()
 
         P4_channels, P5_channels, P6_channels = fpn_sizes
@@ -139,7 +141,8 @@ class BiFPN(nn.Module):
         self.p7_out_w1 = torch.tensor(1, dtype=torch.float, requires_grad=True)
         self.p7_out_w2 = torch.tensor(1, dtype=torch.float, requires_grad=True)
 
-    def forward(self, inputs):
+    def forward(self, inputs: List[torch.Tensor]) -> List[torch.Tensor]:
+        print(type(inputs))
         epsilon = 0.0001
         P4, P5, P6 = inputs
 

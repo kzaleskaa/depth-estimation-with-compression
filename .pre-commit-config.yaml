@@ -67,6 +67,7 @@ repos:
             --ignore-nested-functions,
             -vv,
           ]
+        additional_dependencies: ["setuptools"]
 
   # python check (PEP8), programming errors and code complexity
   - repo: https://github.com/PyCQA/flake8

@@ -3,6 +3,7 @@ import torch.nn.functional as F
 
 
 class NormalizeData:
+    """Created for testing mask normalization"""
     def __init__(self, divisor):
         self.divisor = divisor
 
@@ -11,6 +12,7 @@ class NormalizeData:
 
 
 class BilinearInterpolation:
+    """Interpolates a 2D mask using bilinear interpolation to a given size."""
     def __init__(self, size):
         self.size = size
 

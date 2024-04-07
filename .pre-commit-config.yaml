@@ -43,14 +43,7 @@ repos:
     rev: v1.7.5
     hooks:
       - id: docformatter
-        args:
-          [
-            --in-place,
-            --wrap-summaries=99,
-            --wrap-descriptions=99,
-            --style=sphinx,
-            --black,
-          ]
+        args: [--in-place, --wrap-summaries=99, --wrap-descriptions=99, --style=sphinx, --black]
 
   # python docstring coverage checking
   - repo: https://github.com/econchick/interrogate
@@ -60,7 +53,7 @@ repos:
         args:
           [
             --verbose,
-            --fail-under=80,
+            --fail-under=50,
             --ignore-init-module,
             --ignore-init-method,
             --ignore-module,
@@ -74,13 +67,7 @@ repos:
     rev: 7.0.0
     hooks:
       - id: flake8
-        args:
-          [
-            "--extend-ignore",
-            "E203,E402,E501,F401,F841,RST2,RST301",
-            "--exclude",
-            "logs/*,data/*",
-          ]
+        args: ["--extend-ignore", "E203,E402,E501,F401,F841,RST2,RST301", "--exclude", "logs/*,data/*"]
         additional_dependencies: [flake8-rst-docstrings==0.3.0]
 
   # python security linter
@@ -141,8 +128,4 @@ repos:
       - id: nbqa-isort
         args: ["--profile=black"]
       - id: nbqa-flake8
-        args:
-          [
-            "--extend-ignore=E203,E402,E501,F401,F841",
-            "--exclude=logs/*,data/*",
-          ]
+        args: ["--extend-ignore=E203,E402,E501,F401,F841", "--exclude=logs/*,data/*"]

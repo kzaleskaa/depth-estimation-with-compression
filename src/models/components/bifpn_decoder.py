@@ -142,7 +142,6 @@ class BiFPN(nn.Module):
         self.p7_out_w2 = torch.tensor(1, dtype=torch.float, requires_grad=True)
 
     def forward(self, inputs: List[torch.Tensor]) -> List[torch.Tensor]:
-        print(type(inputs))
         epsilon = 0.0001
         P4, P5, P6 = inputs
 

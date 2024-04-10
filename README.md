@@ -11,9 +11,11 @@ ______________________________________________________________________
 
 </div>
 
+<img src="https://github.com/kzaleskaa/depth-estimation-with-compression/assets/62251989/747c72d8-e096-4113-9951-5886213187bc" />
+
 ## Description
 
-This project entails the development and optimization of a depth estimation model based on a UNET architecture enhanced with **Bi-directional Feature Pyramid Network** (BIFPN) and **EfficientNet** components. This project was implemented within the scope of the "Neural Network Compression with Applications" subject.
+This project entails the development and optimization of a depth estimation model based on a UNET architecture enhanced with **Bi-directional Feature Pyramid Network** (BIFPN) and **EfficientNet** components. The model is trained on the NYU Depth V2 dataset and evaluated on the Structural Similarity Index (SSIM) metric.
 
 ## Installation
 

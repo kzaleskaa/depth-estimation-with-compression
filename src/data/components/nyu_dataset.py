@@ -2,6 +2,7 @@ import os
 from typing import Tuple
 
 import pandas as pd
+import numpy as np
 import torch
 from PIL import Image
 from torch.utils.data import Dataset
@@ -30,6 +31,9 @@ class NYUDataset(Dataset):
 
         img = Image.open(img_path)
         mask = Image.open(mask_path)
+
+        # img = np.array(img)
+        mask =  np.asarray(mask, np.float64)
 
         if self.transform:
             img = self.transform(img)

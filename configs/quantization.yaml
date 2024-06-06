@@ -20,10 +20,10 @@ save_path: name.pty
 quantizer:
   config:
     asymmetric: true
-    backend: 'qnnpack'
+    backend: "qnnpack"
     disable_requantization_for_cat: true
     per_tensor: false
-  work_dir: 'quant_output'
+  work_dir: "quant_output"
 
 task_name: "quantization"
 

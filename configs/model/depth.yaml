@@ -13,7 +13,7 @@ scheduler:
   factor: 0.1
   threshold: 0.0001
   patience: 5
-  threshold_mode: 'abs'
+  threshold_mode: "abs"
 
 net:
   _target_: src.models.components.depth_net_efficient_ffn.DepthNet

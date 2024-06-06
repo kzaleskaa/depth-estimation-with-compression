@@ -21,7 +21,7 @@ class ConvBNReLU(nn.Module):
         *args,
         **kwargs,
     ):
-        super(ConvBNReLU, self).__init__()
+        super().__init__()
         layers = [
             nn.Conv2d(
                 in_chan,
@@ -42,10 +42,8 @@ class ConvBNReLU(nn.Module):
 
 
 class AdapterConv(nn.Module):
-    def __init__(
-        self, in_channels=[256, 512, 1024], out_channels=[64, 128, 256]
-    ):
-        super(AdapterConv, self).__init__()
+    def __init__(self, in_channels=[256, 512, 1024], out_channels=[64, 128, 256]):
+        super().__init__()
         assert len(in_channels) == len(
             out_channels
         ), "Number of input and output branches should match"
@@ -65,7 +63,7 @@ class AdapterConv(nn.Module):
 
 class UpsampleCat(nn.Module):
     def __init__(self, upsample_kwargs=gpu_up_kwargs):
-        super(UpsampleCat, self).__init__()
+        super().__init__()
         self._up_kwargs = upsample_kwargs
 
     def forward(self, x):
@@ -86,25 +84,15 @@ class UpBranch(nn.Module):
         out_channels=[128, 128, 128],
         upsample_kwargs=gpu_up_kwargs,
     ):
-        super(UpBranch, self).__init__()
+        super().__init__()
 
         self._up_kwargs = upsample_kwargs
 
-        self.fam_32_sm = ConvBNReLU(
-            in_channels[2], out_channels[2], ks=3, stride=1, padding=1
-        )
-        self.fam_32_up = ConvBNReLU(
-            in_channels[2], in_channels[1], ks=1, stride=1, padding=0
-        )
-        self.fam_16_sm = ConvBNReLU(
-            in_channels[1], out_channels[0], ks=3, stride=1, padding=1
-        )
-        self.fam_16_up = ConvBNReLU(
-            in_channels[1], in_channels[0], ks=1, stride=1, padding=0
-        )
-        self.fam_8_sm = ConvBNReLU(
-            in_channels[0], out_channels[0], ks=3, stride=1, padding=1
-        )
+        self.fam_32_sm = ConvBNReLU(in_channels[2], out_channels[2], ks=3, stride=1, padding=1)
+        self.fam_32_up = ConvBNReLU(in_channels[2], in_channels[1], ks=1, stride=1, padding=0)
+        self.fam_16_sm = ConvBNReLU(in_channels[1], out_channels[0], ks=3, stride=1, padding=1)
+        self.fam_16_up = ConvBNReLU(in_channels[1], in_channels[0], ks=1, stride=1, padding=0)
+        self.fam_8_sm = ConvBNReLU(in_channels[0], out_channels[0], ks=3, stride=1, padding=1)
 
         self.high_level_ch = sum(out_channels)
         self.out_channels = out_channels
@@ -134,7 +122,7 @@ class UpHeadA(nn.Module):
         in_chans,
         base_chans=[64, 128, 256],
         upsample_kwargs=gpu_up_kwargs,
-      ):
+    ):
         layers = []
         super().__init__()
         layers.append(AdapterConv(in_chans, base_chans))

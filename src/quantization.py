@@ -1,15 +1,15 @@
+import os
 from typing import Any, Dict, List, Optional, Tuple
 
-import torch
-import os
 import hydra
 import lightning as L
 import rootutils
+import torch
+import torch.ao.quantization.quantize_fx as quantize_fx
 from lightning import Callback, LightningDataModule, LightningModule, Trainer
 from lightning.pytorch.loggers import Logger
 from omegaconf import DictConfig
 from tinynn.graph.quantization.quantizer import QATQuantizer
-import torch.ao.quantization.quantize_fx as quantize_fx
 
 rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 # ------------------------------------------------------------------------------------ #
@@ -44,7 +44,7 @@ log = RankedLogger(__name__, rank_zero_only=True)
 
 
 def calibration(model, dataloader, num_iterations):
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
     model.eval()
     count = 0
@@ -111,7 +111,7 @@ def quantization(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
             model.net,
             torch.randn(1, 3, 52, 52),
             work_dir=cfg.quantizer.work_dir,
-            config=cfg.quantizer
+            config=cfg.quantizer,
         )
         model.net = quantizer.quantize()
 

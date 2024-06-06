@@ -3,8 +3,8 @@ from typing import List
 import torch
 import torch.nn as nn
 
-from .ffnet_decoder import UpHeadA
 from .efficientnet_encoder import EfficientNet
+from .ffnet_decoder import UpHeadA
 
 
 class DepthNet(nn.Module):

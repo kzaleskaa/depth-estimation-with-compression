@@ -125,7 +125,7 @@ class UNETLitModule(LightningModule):
         self.train_loss(loss)
         self.train_ssim(preds, targets)
         self.log("train/loss", self.train_loss, on_step=False, on_epoch=True, prog_bar=True)
-        self.log("train/acc", self.train_ssim, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("train/ssim", self.train_ssim, on_step=False, on_epoch=True, prog_bar=True)
 
         # return loss or backpropagation will fail
         return loss

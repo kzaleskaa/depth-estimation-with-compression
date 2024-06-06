@@ -1,0 +1,34 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py experiment=example
+
+defaults:
+  - override /data: depth
+  - override /model: depth
+  - override /callbacks: default
+  - override /trainer: default
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+tags: ["depth", "simple_depth_net"]
+
+seed: 12345
+
+fuse_batch: true
+
+trainer:
+  min_epochs: 10
+  max_epochs: 25
+  gradient_clip_val: 0.5
+
+model:
+  optimizer:
+    lr: 0.002
+  compile: false
+
+data:
+  batch_size: 64
+
+save_path: fuse_batch.pty

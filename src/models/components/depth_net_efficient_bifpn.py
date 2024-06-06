@@ -14,7 +14,7 @@ class DepthNet(nn.Module):
         self.decoder = BiFPN(in_features)
         self.upsample_4 = nn.Upsample(scale_factor=4, mode="nearest")
         self.upsample_2 = nn.Upsample(scale_factor=2, mode="nearest")
-        self.final_conv = nn.Conv2d(in_channels=192, out_channels=1, kernel_size=3, padding="same")
+        self.final_conv = nn.Conv2d(in_channels=192, out_channels=1, kernel_size=3, padding=1)
 
     def upsample_cat(self, x: List[torch.Tensor]) -> torch.Tensor:
         p4, p5, p6 = x

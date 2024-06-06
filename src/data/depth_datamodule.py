@@ -78,12 +78,12 @@ class DepthDataModule(LightningDataModule):
             [transforms.PILToTensor(), transforms.Resize((224, 224))]
         )
         self.transforms_mask_train = transforms.Compose(
-            [transforms.PILToTensor(), BilinearInterpolation((56, 56))]
+            [transforms.ToTensor(), BilinearInterpolation((56, 56))]
         )
         self.transforms_mask = transforms.Compose(
             [
-                transforms.PILToTensor(),
-                NormalizeData(10_000 * (1 / 255)),
+                transforms.ToTensor(),
+                NormalizeData(10_000.0 * (1.0 / 255.0)),
                 BilinearInterpolation((56, 56)),
             ]
         )
@@ -156,7 +156,7 @@ class DepthDataModule(LightningDataModule):
             num_workers=self.hparams.num_workers,
             pin_memory=self.hparams.pin_memory,
             shuffle=True,
-            # persistent_workers=True,
+            persistent_workers=True,
         )
 
     def val_dataloader(self) -> DataLoader[Any]:
@@ -170,7 +170,7 @@ class DepthDataModule(LightningDataModule):
             num_workers=self.hparams.num_workers,
             pin_memory=self.hparams.pin_memory,
             shuffle=False,
-            # persistent_workers=True,
+            persistent_workers=True,
         )
 
     def test_dataloader(self) -> DataLoader[Any]:

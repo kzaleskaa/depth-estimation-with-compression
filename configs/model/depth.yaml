@@ -3,7 +3,7 @@ _target_: src.models.unet_module.UNETLitModule
 optimizer:
   _target_: torch.optim.Adam
   _partial_: true
-  lr: 0.001
+  lr: 1e-3
   weight_decay: 0.0
 
 scheduler:
@@ -11,7 +11,9 @@ scheduler:
   _partial_: true
   mode: min
   factor: 0.1
-  patience: 20
+  threshold: 0.0001
+  patience: 5
+  threshold_mode: 'abs'
 
 net:
   _target_: src.models.components.depth_net_efficient_ffn.DepthNet

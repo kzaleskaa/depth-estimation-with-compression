@@ -74,3 +74,33 @@ You can override any parameter from command line like this
 ```bash
 python src/train.py trainer.max_epochs=20 data.batch_size=64
 ```
+
+
+## Results for BiFPN + FFNet
+
+The base model was trained for 25 epochs. QAT was performed for 10 epochs.
+
+**Baseline and Fuse**
+
+<div align=center>
+
+| Method       | test/ssim (Per tensor) | model size (MB) (Per tensor) |
+|--------------|------------------------|------------------------------|
+| **baseline** | 0.778                  | 3.53                         |
+| **fuse**     | 0.778                  | 3.45                         |
+
+</div>
+
+
+**PTQ, QAT, and PTQ + QAT (Per tensor and Per channel)**
+
+<div align=center>
+
+
+| Method        | test/ssim (Per tensor)      | model size (MB) (Per tensor)   | test/ssim (Per channel)       | model size (MB) (Per channel)    |
+|---------------|-----------------------------|--------------------------------|-------------------------------|----------------------------------|
+| **ptq**       | 0.6480          | 0.96791             | 0.6518            | 0.9679               |
+| **qat**       | 0.7715          | 0.96791             | 0.7627            | 0.9681               |
+| **ptq + qat** | 0.7724          | 0.96899             | 0.7626            | 0.9692               |
+
+</div>

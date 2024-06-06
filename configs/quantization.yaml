@@ -1,0 +1,33 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - data: depth
+  - model: depth
+  - callbacks: default
+  - logger: null # set logger here or use command line (e.g. `python train.py logger=tensorboard`)
+  - trainer: default
+  - paths: default
+  - extras: default
+  - hydra: default
+
+fuse_batch: false
+ptq: false
+qat: false
+
+save_path: name.pty
+
+quantizer:
+  config:
+    asymmetric: true
+    backend: 'qnnpack'
+    disable_requantization_for_cat: true
+    per_tensor: false
+  work_dir: 'quant_output'
+
+task_name: "quantization"
+
+tags: ["dev"]
+
+# passing checkpoint path is necessary for quantization
+ckpt_path: ???

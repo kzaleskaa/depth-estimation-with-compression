@@ -12,7 +12,7 @@ class DepthNet(nn.Module):
         super().__init__()
         self.encoder = EfficientNet()
         self.decoder = UpHeadA(in_features)
-        self.final_conv = nn.Conv2d(in_channels=384, out_channels=1, kernel_size=3, padding="same")
+        self.final_conv = nn.Conv2d(in_channels=384, out_channels=1, kernel_size=3, padding=1)
 
     def forward(self, x):
         x1, x2, x3 = self.encoder(x)

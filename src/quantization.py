@@ -39,8 +39,6 @@ from src.utils import (
     log_hyperparameters,
     task_wrapper,
 )
-from src.models.unet_module import UNETLitModule
-from src.data.depth_datamodule import DepthDataModule
 
 log = RankedLogger(__name__, rank_zero_only=True)
 
@@ -60,50 +58,6 @@ def calibration(model, dataloader, num_iterations):
             count += 1
             if count >= num_iterations:
                 break
-
-    return model
-
-
-def ptq(cfg, model, datamodule):
-    quantizer = QATQuantizer(
-        model.net,
-        torch.randn(1, 3, 52, 52),
-        work_dir=cfg.work_dir,
-        config=cfg.config
-    )
-    model.net = quantizer.quantize()
-    model.net.apply(torch.quantization.disable_fake_quant)
-    model.net.apply(torch.quantization.enable_observer)
-
-    calibration(model.net, datamodule.train_dataloader(), 50)
-
-    model.net.apply(torch.quantization.disable_observer)
-    model.net.apply(torch.quantization.enable_fake_quant)
-
-    with torch.no_grad():
-        model.net.eval()
-        model.net.cpu()
-        model.net = torch.quantization.convert(model.net)
-
-    return model
-
-def qat(cfg, model, datamodule, trainer):
-    quantizer = QATQuantizer(
-        model.net,
-        torch.randn(1, 3, 52, 52),
-        work_dir=cfg.qat.work_dir,
-        config=cfg.qat.config
-    )
-    model.net = quantizer.quantize()
-
-    # quantization-aware training
-    trainer.fit(model=model, datamodule=datamodule)
-
-    with torch.no_grad():
-        model.net.eval()
-        model.net.cpu()
-
-        model.net = quantizer.convert(model.net)
 
     return model
 
